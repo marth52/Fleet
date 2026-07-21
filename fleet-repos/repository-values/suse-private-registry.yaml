@@ -1,0 +1,13 @@
+gitRepos:
+  suse-private-registry:    
+    # enabled: true
+    # enabled set to true in the values files is redundant
+    # the default behaviour is always "deploy" meaning enabled is to true, unless explicitly set to false
+    namespace: fleet-local
+    branch: "main"
+    helmSecretName: "suse-registry-creds"
+    helmRepoURLRegex: "oci://registry.suse.com"
+    paths:
+    - /fleet-applications/suse-private-registry
+    targets:
+    - clusterSelector: {}

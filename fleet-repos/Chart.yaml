@@ -1,0 +1,4 @@
+apiVersion: v2
+name: fleet-gitrepos
+description: Manages Fleet GitRepo resources
+version: 1.0.0

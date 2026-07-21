@@ -1,0 +1,125 @@
+global:
+  imagePullSecrets: [suse-registry-creds]
+
+# Todo: set it as preexisting secret  
+existingSecretAdminPassword: "suse-private-registry-admin-creds"
+existingSecretAdminPasswordKey: HARBOR_ADMIN_PASSWORD
+
+
+expose:
+  type: loadBalancer
+  # loadBalancer:
+  #   IP: "192.168.0.152"
+  tls:
+    certSource: secret
+    secret:
+      secretName: "tls-suse-private-registry"
+
+externalURL: "https://suse-registry.marth52creative.xyz"
+
+metrics:
+  enabled: false
+
+containerSecurityContext:
+  privileged: false
+  allowPrivilegeEscalation: false
+  seccompProfile:
+    type: RuntimeDefault
+  runAsNonRoot: true
+  capabilities:
+    drop:
+      - ALL
+
+nginx:
+  resources:
+    requests:
+      memory: 256Mi
+      cpu: 100m
+    limits:
+      memory: 512Mi
+      cpu: 100m 
+portal:
+  resources:
+    requests:
+      memory: 256Mi
+      cpu: 100m
+    limits:
+      memory: 512Mi
+      cpu: 100m 
+
+core:
+  resources:
+    requests:
+      memory: 256Mi
+      cpu: 100m
+    limits:
+      memory: 512Mi
+      cpu: 200m    
+
+jobservice:
+  resources:
+    requests:
+      memory: 256Mi
+      cpu: 100m
+    limits:
+      memory: 512Mi
+      cpu: 200m    
+
+registry:
+  registry:
+    resources:
+      requests:
+        memory: 256Mi
+        cpu: 100m
+      limits:
+        memory: 512Mi
+        cpu: 200m
+  controller:
+    resources:
+      requests:
+        memory: 256Mi
+        cpu: 100m
+      limits:
+        memory: 512Mi
+        cpu: 200m    
+
+redis:
+  type: internal
+  resources:
+    requests:
+      memory: 256Mi
+      cpu: 100m
+    limits:
+      memory: 512Mi
+      cpu: 200m  
+
+database:
+  # if external database is used, set "type" to "external"
+  # and fill the connection information in "external" section
+  type: internal
+  resources:
+    requests:
+      memory: 256Mi
+      cpu: 100m
+    limits:
+      memory: 512Mi
+      cpu: 200m
+
+trivy:
+  enabled: false
+  resources:
+    requests:
+      memory: 256Mi
+      cpu: 100m
+    limits:
+      memory: 512Mi
+      cpu: 200m  
+
+exporter:
+  resources:
+    requests:
+      memory: 256Mi
+      cpu: 100m
+    limits:
+      memory: 512Mi
+      cpu: 200m    

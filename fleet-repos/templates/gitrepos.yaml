@@ -1,0 +1,25 @@
+{{- range $name, $config := .Values.gitRepos }}
+{{- if ne $config.enabled false }}
+---
+apiVersion: fleet.cattle.io/v1alpha1
+kind: GitRepo
+metadata:
+  name: {{ $name }}
+  namespace: {{ $config.namespace }}
+spec:
+  repo: {{ $config.repo | default $.Values.defaults.repo | quote }}
+  {{- if $config.branch }}
+  branch: {{ $config.branch | quote }}
+  {{- end }}
+  clientSecretName: {{ $config.clientSecretName | default $.Values.defaults.clientSecretName }}
+  {{- if $config.helmSecretName }}
+  helmSecretName: {{ $config.helmSecretName }}
+  {{- end }}
+  helmRepoURLRegex: {{ $config.helmRepoURLRegex }}
+  paths: {{- toYaml $config.paths | nindent 2 }}
+  {{- if $config.targets }}
+  targets:
+  {{- toYaml $config.targets | nindent 2 }}
+  {{- end }}
+{{- end }}
+{{- end }}

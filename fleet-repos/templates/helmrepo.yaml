@@ -1,0 +1,34 @@
+{{- range $name, $config := .Values.helmRepos }}
+{{- if ne $config.enabled false }}
+---
+apiVersion: fleet.cattle.io/v1alpha1
+kind: HelmOp
+metadata:
+  name: {{ $name }}
+  namespace: {{ $config.namespace | default $.Values.defaults.namespace }}
+spec:
+  helm:
+    releaseName: {{ .ReleaseName | default $name }}
+    repo: {{ $config.repo | quote }}
+    {{- if not (hasPrefix "oci://" $config.repo) }}
+    chart: {{ $config.chart | required (printf "please add the chart parameter as well since repo is not set to an oci repository") }}
+    {{- end }}
+    {{- if $config.valuesFrom }}
+    valuesFrom: {{ toYaml $config.valuesFrom | nindent 6 }}
+    {{- else if $config.values }}
+    values: {{ toYaml $config.values | nindent 6 }}
+    {{- end }}
+    version: {{ $config.version | default "latest" | quote }}
+  defaultNamespace: {{ $config.workloadNamespace }}
+  keepResources: {{ $config.keepResources | default false }}
+  {{- if $config.helmSecretName }}
+  helmSecretName: {{ $config.helmSecretName }}
+  {{- end }}
+  insecureSkipTLSVerify: {{ $config.insecureSkipTLSVerify | default false }}
+  {{- if $config.downstreamResources.enabled }}
+  downstreamResources:
+  {{- toYaml $config.downstreamResources.resources | nindent 4 }}
+  {{- end }}
+  targets: {{ toYaml $config.targets | nindent 2 }}
+{{- end }}
+{{- end }}

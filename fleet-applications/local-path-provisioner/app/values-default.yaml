@@ -1,0 +1,25 @@
+global:
+  imagePullSecrets: [ "appco-imagepull-creds"]
+storageClass:
+  defaultClass: true
+defaultVolumeType: hostPath
+nodePathMap:
+  - node: DEFAULT_PATH_FOR_NON_LISTED_NODES
+    paths:
+      - /opt/local-path-provisioner   # where volumes will be mounted to
+securityContext:
+  allowPrivilegeEscalation: false
+  seccompProfile:
+    type: RuntimeDefault
+  capabilities:
+    drop: ["ALL"]
+  runAsUser: 65534
+  runAsGroup: 65534
+  readOnlyRootFilesystem: true
+resources:
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi

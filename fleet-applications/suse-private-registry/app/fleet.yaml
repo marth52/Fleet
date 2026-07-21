@@ -1,0 +1,19 @@
+defaultNamespace: suse-private-registry
+name: suse-private-registry
+dependsOn:
+  - name: local-path-provisioner
+helm:
+  releaseName: "suse-private-registry"
+  chart: "oci://registry.suse.com/private-registry/1.2/private-registry-helm"
+  version: "1.2.0"
+  targetNamespace: suse-private-registry
+  valuesFiles:
+    - values-default.yaml
+diff:
+  comparePatches:
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: suse-private-registry-harbor-core
+      namespace: suse-private-registry
+      jsonPointers:
+        - /spec/template/spec/volumes
