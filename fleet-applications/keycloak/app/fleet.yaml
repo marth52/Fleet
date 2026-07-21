@@ -1,0 +1,6 @@
+defaultNamespace: keycloak
+namespaceLabels:
+    pod-security.kubernetes.io/enforce: privileged
+helm:
+  releaseName: keycloak
+  takeOwnership: true

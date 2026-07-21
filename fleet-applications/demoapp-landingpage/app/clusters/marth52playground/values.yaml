@@ -1,0 +1,38 @@
+# Default values for demoapp.
+replicaCount: 1
+
+imagePullSecrets:
+  - name: private-registry-imagepull
+
+image:
+  repository: nginxinc/nginx-unprivileged
+  pullPolicy: Always
+  tag: "alpine3.24-slim"
+
+global:
+  cattle:
+    environment: "Lab Environment"
+    # Set by Fleet templating in fleet.yaml.
+    clusterName: ${ if hasKey .ClusterLabels "management.cattle.io/cluster-display-name" }${ get .ClusterLabels "management.cattle.io/cluster-display-name" }${ else }unknown-cluster${ end }
+    url: https://rancher.marth52creative.xyz/
+
+ingress:
+  enabled: true
+  className: "traefik"
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+  hosts:
+      # fleet template function to set the hostname based on the cluster name label, with a fallback for unknown clusters
+    - host: ${ if hasKey .ClusterLabels "management.cattle.io/cluster-display-name" }${ get .ClusterLabels "management.cattle.io/cluster-display-name" }${ else }unknown-cluster${ end }-marth52creative.xyz
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: "tls-demo-app"
+      hosts:
+        - ${ if hasKey .ClusterLabels "management.cattle.io/cluster-display-name" }${ get .ClusterLabels "management.cattle.io/cluster-display-name" }${ else }unknown-cluster${ end }-marth52creative.xyz
+
+configMaps:
+  - name: index-html
+    mountPath: /usr/share/nginx/html/index.html
+    subPath: index.html

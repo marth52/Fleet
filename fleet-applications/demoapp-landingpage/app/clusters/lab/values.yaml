@@ -1,0 +1,41 @@
+# Default values for demoapp.
+replicaCount: 1
+
+# imagePullSecrets:
+#   - name: private-registry-imagepull
+
+image:
+  repository: nginxinc/nginx-unprivileged
+  pullPolicy: Always
+  tag: "alpine3.24-slim"
+
+global:
+  cattle:
+    environment: "Lab Environment"
+    # Set by Fleet templating in fleet.yaml.
+    clusterName: ${ if hasKey .ClusterLabels "management.cattle.io/cluster-display-name" }${ get .ClusterLabels "management.cattle.io/cluster-display-name" }${ else }suse-private-registry${ end }
+    url: https://rancher.marth52creative.xyz/
+
+service:
+  type: LoadBalancer
+  loadBalancer:
+    # URL/host shown on the landing page when type is LoadBalancer.
+    host: "demoapp-spr-lab.marth52creative.xyz"
+    ip: "192.168.0.153"
+
+# Mount any number of ConfigMaps. Each entry becomes a volume + volumeMount.
+# configMap defaults to name if omitted; subPath/defaultMode are optional; readOnly defaults to true.
+configMaps:
+  - name: index-html
+    mountPath: /usr/share/nginx/html/index.html
+    subPath: index.html
+  - name: tls-conf
+    mountPath: /etc/nginx/conf.d/tls.conf
+    subPath: tls.conf
+    readOnly: true
+# Mount any number of Secrets. Each entry becomes a volume + volumeMount.
+# secret defaults to name if omitted; subPath/defaultMode are optional; readOnly defaults to true.
+secrets:
+  - name: tls-demo-app
+    mountPath: /etc/nginx/ssl
+    readOnly: true

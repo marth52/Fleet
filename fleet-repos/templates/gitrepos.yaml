@@ -15,7 +15,9 @@ spec:
   {{- if $config.helmSecretName }}
   helmSecretName: {{ $config.helmSecretName }}
   {{- end }}
+  {{- if $config.helmRepoURLRegex }}
   helmRepoURLRegex: {{ $config.helmRepoURLRegex }}
+  {{- end }}
   paths: {{- toYaml $config.paths | nindent 2 }}
   {{- if $config.targets }}
   targets:

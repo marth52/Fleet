@@ -1,0 +1,21 @@
+{{- /* Landing page ConfigMap consumed via the index-html entry in .Values.configMaps */ -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: index-html
+  labels:
+    {{- include "demoapp.labels" . | nindent 4 }}
+data:
+  index.html: |
+{{ tpl (.Files.Get "files/index.html") . | indent 4 }}
+---
+{{/* nginx TLS server block consumed via the tls-conf entry in .Values.configMaps */}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tls-conf
+  labels:
+    {{- include "demoapp.labels" . | nindent 4 }}
+data:
+  tls.conf: |
+{{ tpl (.Files.Get "files/tls.conf") . | indent 4 }}

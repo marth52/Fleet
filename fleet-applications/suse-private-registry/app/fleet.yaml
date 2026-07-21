@@ -1,7 +1,9 @@
 defaultNamespace: suse-private-registry
 name: suse-private-registry
 dependsOn:
+  - name: cert-manager-configs
   - name: local-path-provisioner
+  - name: suse-private-registry-configs
 helm:
   releaseName: "suse-private-registry"
   chart: "oci://registry.suse.com/private-registry/1.2/private-registry-helm"
@@ -9,6 +11,16 @@ helm:
   targetNamespace: suse-private-registry
   valuesFiles:
     - values-default.yaml
+targetCustomizations:
+  - name: spr-lab
+    helm:
+      chart: "oci://registry.suse.com/private-registry/1.2/private-registry-helm"
+      valuesFiles:
+        - values-default.yaml
+        - lab/values.yaml
+    clusterSelector:
+      matchLabels:
+        environment: spr-lab
 diff:
   comparePatches:
     - apiVersion: apps/v1

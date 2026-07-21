@@ -1,0 +1,5 @@
+global:
+  imagePullSecrets: 
+    - name: appco-imagepull-creds
+crds:
+  enabled: true

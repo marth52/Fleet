@@ -1,0 +1,11 @@
+defaultNamespace: demoapp
+name: demoapp-dependencies
+targetCustomizations:
+- name: lab
+  yaml:
+    overlays:
+      - lab
+  clusterSelector:
+    matchLabels:
+      environment: spr-lab
+      demoapp: true

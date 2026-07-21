@@ -1,0 +1,20 @@
+defaultNamespace: demoapp
+name: demoapp-landingpage
+dependsOn:
+  - name: demoapp-dependencies
+  - name: cert-manager-configs
+helm:
+  releaseName: "demoapp-landingpage"
+  takeOwnership: true
+  chart: ./chart
+  version: "1.0.0"
+  targetNamespace: demoapp
+targetCustomizations:
+  - name: spr-lab
+    helm:
+      valuesFiles:
+        - app/clusters/lab/values.yaml
+    clusterSelector:
+      matchLabels:
+        environment: spr-lab
+        demoapp: true

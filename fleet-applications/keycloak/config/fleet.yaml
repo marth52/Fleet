@@ -1,0 +1,14 @@
+defaultNamespace: keycloak
+namespaceLabels:
+    pod-security.kubernetes.io/enforce: privileged
+helm:
+  releaseName: keycloak-config
+  takeOwnership: true
+targetCustomizations:
+- name: marth52-playground
+  yaml:
+    overlays:
+      - clusters/marth52-playground
+  clusterSelector:
+    matchLabels:
+      management.cattle.io/cluster-display-name: marth52-playground

@@ -1,15 +1,15 @@
 gitRepos:
-  local-path-provisioner:
+  keycloak:
     # enabled: true
     # enabled set to true in the values files is redundant
     # the default behaviour is always "deploy" meaning enabled is to true, unless explicitly set to false
-    namespace: fleet-local
+    namespace: fleet-default
     branch: "main"
-    helmSecretName: "appco-auth-creds"
-    helmRepoURLRegex: "oci://dp.apps.rancher.io"
+    #helmSecretName: "appco-auth-creds"
+    #helmRepoURLRegex: "oci://dp.apps.rancher.io"
     paths:
-    - /fleet-applications/local-path-provisioner
+    - /fleet-applications/keycloak
     targets:
     - clusterSelector:
         matchLabels:
-          local-storage: "true"
+          keycloak: "true"

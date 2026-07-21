@@ -1,0 +1,11 @@
+gitRepos:
+  demoapp-landingpage:
+    namespace: fleet-default
+    branch: "main"
+    #helmSecretName: private-registry-login
+    paths:
+      - /fleet-applications/demoapp-landingpage
+    targets:
+    - clusterSelector:
+        matchLabels:
+          demoapp: "true"

@@ -1,0 +1,20 @@
+{{- $type := .Values.service.type | default "ClusterIP" -}}
+{{- if not (has $type (list "ClusterIP" "LoadBalancer")) }}{{ fail (printf "service.type must be ClusterIP or LoadBalancer, got %q" $type) }}{{ end -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "demoapp.fullname" . }}
+  labels:
+    {{- include "demoapp.labels" . | nindent 4 }}
+spec:
+  type: {{ $type }}
+  {{- if and (eq $type "LoadBalancer") .Values.service.loadBalancer.ip }}
+  loadBalancerIP: {{ .Values.service.loadBalancer.ip | quote }}
+  {{- end }}
+  ports:
+    - port: {{ include "demoapp.service.port" . }}
+      targetPort: {{ include "demoapp.service.targetPort" . }}
+      protocol: TCP
+      name: {{ if eq $type "LoadBalancer" }}https{{ else }}http{{ end }}
+  selector:
+    {{- include "demoapp.selectorLabels" . | nindent 4 }}

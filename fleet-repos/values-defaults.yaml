@@ -1,6 +1,6 @@
 defaults:
-  repo: "ggit@github.com:marth52/Fleet.git"
-  clientSecretName: azuredevops-sshkey
+  repo: "git@github.com:marth52/Fleet.git"
+  clientSecretName: git-sshkey
 
 # App entries are defined in their own values-<app>.yaml files
 gitRepos: {}

@@ -1,0 +1,4 @@
+expose:
+  loadBalancer:
+    IP: "192.168.0.152"
+externalURL: "https://registry.marth52creative.xyz"

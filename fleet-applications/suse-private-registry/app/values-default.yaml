@@ -1,8 +1,8 @@
-global:
-  imagePullSecrets: [suse-registry-creds]
+imagePullSecrets:
+  - name: suse-registry-imagepull-creds
 
 # Todo: set it as preexisting secret  
-existingSecretAdminPassword: "suse-private-registry-admin-creds"
+existingSecretAdminPassword: "private-registry-auth-creds"
 existingSecretAdminPasswordKey: HARBOR_ADMIN_PASSWORD
 
 
@@ -15,7 +15,7 @@ expose:
     secret:
       secretName: "tls-suse-private-registry"
 
-externalURL: "https://suse-registry.marth52creative.xyz"
+#externalURL: "https://suse-registry.marth52creative.xyz"
 
 metrics:
   enabled: false
@@ -54,8 +54,7 @@ core:
       cpu: 100m
     limits:
       memory: 512Mi
-      cpu: 200m    
-
+      cpu: 200m
 jobservice:
   resources:
     requests:

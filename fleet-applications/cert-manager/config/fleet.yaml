@@ -1,0 +1,4 @@
+defaultNamespace: cert-manager
+name: cert-manager-configs
+dependsOn:
+  - name: cert-manager
