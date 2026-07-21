@@ -1,5 +1,5 @@
 global:
-  imagePullSecrets: [ "appco-imagepull-creds"]
+  imagePullSecrets: [ "appco-auth-creds"]
 storageClass:
   defaultClass: true
 defaultVolumeType: hostPath
