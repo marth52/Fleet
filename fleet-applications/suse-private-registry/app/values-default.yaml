@@ -1,6 +1,5 @@
 global:
-  imagePullSecrets: 
-  - suse-registry-auth-creds
+  imagePullSecrets: []
 
 # Todo: set it as preexisting secret  
 existingSecretAdminPassword: "suse-private-registry-admin-creds"
