@@ -1,0 +1,138 @@
+# Default values for demoapp.
+replicaCount: 1
+
+autoscaling:
+  enabled: false
+
+# This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
+image:
+  repository: suse-registry.marth52creative.xyz/custom-images/nginx-unprivileged
+  # This sets the pull policy for images.
+  pullPolicy: Always
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "alpine3.24-slim"
+
+# This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+imagePullSecrets:
+  - name: private-registry
+
+# This is to override the chart name.
+nameOverride: ""
+fullnameOverride: "demoapp-landingpage"
+
+global:
+  cattle:
+    environment: "Lab Environment"
+    # Set by Fleet templating in fleet.yaml.
+    clusterName: ${ if hasKey .ClusterLabels "management.cattle.io/cluster-display-name" }${ get .ClusterLabels "management.cattle.io/cluster-display-name" }${ else }unknown-cluster${ end }
+    url: https://rancher-prime.marth52creative.xyz/
+
+serviceAccount:
+  create: true
+  automount: false
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template.
+  name: ""
+
+podSecurityContext:
+  fsGroup: 2000
+
+securityContext:
+  privileged: false
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+  readOnlyRootFilesystem: false
+  runAsNonRoot: true
+  runAsUser: 101
+  runAsGroup: 101
+  seccompProfile:
+    type: RuntimeDefault
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 8080
+ingress:
+  enabled: true
+  className: "traefik"
+  hosts:
+      # fleet template function to set the hostname based on the cluster name label, with a fallback for unknown clusters
+    - host: ${ if hasKey .ClusterLabels "management.cattle.io/cluster-display-name" }${ get .ClusterLabels "management.cattle.io/cluster-display-name" }${ else }unknown-cluster${ end }-demo-app.zeiss.org 
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: "tls-demo-app"
+      hosts:
+        - ${ if hasKey .ClusterLabels "management.cattle.io/cluster-display-name" }${ get .ClusterLabels "management.cattle.io/cluster-display-name" }${ else }unknown-cluster${ end }-demo-app.zeiss.org
+httpRoute:
+  # HTTPRoute enabled.
+  enabled: false
+  # HTTPRoute annotations.
+  annotations: {}
+  # Which Gateways this Route is attached to.
+  parentRefs:
+  - name: gateway
+    sectionName: http
+    # namespace: default
+  # Hostnames matching HTTP header.
+  hostnames:
+  - chart-example.local
+  # List of rules and filters applied.
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /headers
+  #   filters:
+  #   - type: RequestHeaderModifier
+  #     requestHeaderModifier:
+  #       set:
+  #       - name: My-Overwrite-Header
+  #         value: this-is-the-only-value
+  #       remove:
+  #       - User-Agent
+  # - matches:
+  #   - path:
+  #       type: PathPrefix
+  #       value: /echo
+  #     headers:
+  #     - name: version
+  #       value: v2
+
+resources:
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+configmap:
+  enabled: true
+  name: "index-html"
+  mountPath: "/usr/share/nginx/html/index.html"
+  subPath: "index.html"
+
+persistence:
+  storageClass: ""
+  existingClaim: ""
+  enabled: false
+  mountPath: /data
+  accessMode: ReadWriteOnce
+  size: 1Gi
+  # if you need any additional volumes, you can define them here
+  additionalVolumes: []
+  # if you need any additional volume mounts, you can define them here
+  additionalMounts: []
+
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+

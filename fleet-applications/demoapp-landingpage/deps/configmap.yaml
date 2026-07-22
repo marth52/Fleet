@@ -1,0 +1,40 @@
+# configmap-values.yaml - ConfigMap containing Helm values
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: demoapp-values
+  namespace: demoapp
+data:
+  values.yaml: |
+    # override values for demoapp.
+    replicaCount: 2
+
+    image:
+      repository: suse-registry.marth52creative.xyz/custom-images/nginx-unprivileged
+      pullPolicy: Always
+      tag: "alpine3.24-slim"
+
+    imagePullSecrets:
+      - name: private-registry
+
+    global:
+      cattle:
+        environment: "HomeLab Environment"
+        # Set by Fleet templating in fleet.yaml.
+        clusterName: ${ if hasKey .ClusterLabels "management.cattle.io/cluster-display-name" }${ get .ClusterLabels "management.cattle.io/cluster-display-name" }${ else }unknown-cluster${ end }
+        url: https://rancher-prime.marth52creative.xyz/
+
+    ingress:
+      enabled: true
+      className: "traefik"
+      hosts:
+        - host: demoapp-landingpage.marth52creative.xyz  
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - secretName: "tls-demo-app"
+          hosts:
+            - demoapp-landingpage.marth52creative.xyz
+    
+

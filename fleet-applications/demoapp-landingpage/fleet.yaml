@@ -1,12 +1,16 @@
 defaultNamespace: demoapp
 name: demoapp-landingpage
 dependsOn:
-  - name: demoapp-certificate
+  - name: demoapp-dependencies
+    namespace: demoapp
 helm:
   releaseName: "demoapp-landingpage"
   takeOwnership: true
   chart: ./chart
   version: "1.0.0"
   targetNamespace: demoapp
-  valuesFiles:
-    - values-default.yaml
+  valuesFrom:
+    - configMapKeyRef:
+        name: demoapp-values
+        namespace: demoapp
+        key: values.yaml
