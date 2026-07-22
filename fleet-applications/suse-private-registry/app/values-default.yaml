@@ -59,7 +59,7 @@ core:
     {
       "auth_mode": "oidc_auth",
       "oidc_name": "Rancher",
-      "oidc_endpoint": "rancher-prime.marth52creative.xyz/oidc",
+      "oidc_endpoint": "https://rancher-prime.marth52creative.xyz/oidc",
       "oidc_client_id": "client-5h994nl8dc",
       "oidc_client_secret": "secret-q58ljkv4kdz74b5ngp4gjfvd88pqtgz28zp6wrsf9tzjfkfn5xxbhlw4",
       "oidc_scope": "openid,profile,offline_access",
