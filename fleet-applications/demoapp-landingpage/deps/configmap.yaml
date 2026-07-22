@@ -15,7 +15,7 @@ data:
       tag: "alpine3.24-slim"
 
     imagePullSecrets:
-      - name: private-registry
+      - name: private-registry-imagepull
 
     global:
       cattle:

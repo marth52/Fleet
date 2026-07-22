@@ -22,7 +22,7 @@ fullnameOverride: "demoapp-landingpage"
 
 global:
   cattle:
-    environment: "Lab Environment"
+    environment: "HomeLab Environment"
     # Set by Fleet templating in fleet.yaml.
     clusterName: ${ if hasKey .ClusterLabels "management.cattle.io/cluster-display-name" }${ get .ClusterLabels "management.cattle.io/cluster-display-name" }${ else }unknown-cluster${ end }
     url: https://rancher-prime.marth52creative.xyz/
@@ -60,14 +60,14 @@ ingress:
   className: "traefik"
   hosts:
       # fleet template function to set the hostname based on the cluster name label, with a fallback for unknown clusters
-    - host: ${ if hasKey .ClusterLabels "management.cattle.io/cluster-display-name" }${ get .ClusterLabels "management.cattle.io/cluster-display-name" }${ else }unknown-cluster${ end }-demo-app.zeiss.org 
+    - host: "some.example.com"
       paths:
         - path: /
           pathType: Prefix
   tls:
-    - secretName: "tls-demo-app"
+    - secretName: "example-tls"
       hosts:
-        - ${ if hasKey .ClusterLabels "management.cattle.io/cluster-display-name" }${ get .ClusterLabels "management.cattle.io/cluster-display-name" }${ else }unknown-cluster${ end }-demo-app.zeiss.org
+        - "some.example.com"
 httpRoute:
   # HTTPRoute enabled.
   enabled: false
