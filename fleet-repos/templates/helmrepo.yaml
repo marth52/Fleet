@@ -25,9 +25,11 @@ spec:
   helmSecretName: {{ $config.helmSecretName }}
   {{- end }}
   insecureSkipTLSVerify: {{ $config.insecureSkipTLSVerify | default false }}
-  {{- if $config.downstreamResources.enabled }}
+  {{- with $config.downstreamResources }}
+  {{- if .enabled }}
   downstreamResources:
-  {{- toYaml $config.downstreamResources.resources | nindent 4 }}
+  {{- toYaml .resources | nindent 4 }}
+  {{- end }}
   {{- end }}
   targets: {{ toYaml $config.targets | nindent 2 }}
 {{- end }}

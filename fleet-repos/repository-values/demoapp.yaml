@@ -1,0 +1,17 @@
+helmRepos:
+  demoapp: # Helm Release Name -> {{ $name }}
+    namespace: fleet-default
+    # if repo is not an oci repository, chart parameter is required
+    # chart: "some-chart"
+    repo: "oci://suse-registry.marth52creative.xyz/custom-charts/demoapp-landingpage"
+    version: "v1.0.0"
+    workloadNamespace: demoapp
+    #keepResources: true
+    insecureSkipTLSVerify: false
+    helmSecretName: "private-registry"
+    downstreamResources:
+      enabled: false
+    # if repo is not an oci repository, chart parameter is required
+    #chart: "some-chart"
+    targets:
+    - clusterSelector: {}

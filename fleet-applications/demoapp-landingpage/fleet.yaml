@@ -1,0 +1,12 @@
+defaultNamespace: demoapp
+name: demoapp-landingpage
+dependsOn:
+  - name: demoapp-certificate
+helm:
+  releaseName: "demoapp-landingpage"
+  takeOwnership: true
+  chart: ./chart
+  version: "1.0.0"
+  targetNamespace: demoapp
+  valuesFiles:
+    - values-default.yaml

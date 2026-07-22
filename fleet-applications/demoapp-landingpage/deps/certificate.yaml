@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: tls-demo-app
+  namespace: demoapp
+spec:
+  secretName: tls-demo-app
+  commonName: demoapp-landingpage.marth52creative.xyz
+  dnsNames:
+  - demoapp-landingpage.marth52creative.xyz
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
