@@ -9,8 +9,5 @@ helm:
   chart: ./chart
   version: "1.0.0"
   targetNamespace: demoapp
-  valuesFrom:
-    - configMapKeyRef:
-        name: demoapp-values
-        namespace: demoapp
-        key: values.yaml
+  valuesFiles:
+    - values-default.yaml
