@@ -54,8 +54,22 @@ core:
       cpu: 100m
     limits:
       memory: 512Mi
-      cpu: 200m    
-
+      cpu: 200m
+  configureUserSettings: |
+    {
+      "auth_mode": "oidc_auth",
+      "oidc_name": "Rancher",
+      "oidc_endpoint": "rancher-prime.marth52creative.xyz/oidc",
+      "oidc_client_id": "client-5h994nl8dc",
+      "oidc_client_secret": "secret-q58ljkv4kdz74b5ngp4gjfvd88pqtgz28zp6wrsf9tzjfkfn5xxbhlw4,
+      "oidc_scope": "openid,profile,offline_access",
+      "oidc_verify_cert": true,
+      "oidc_auto_onboard": true,
+      "oidc_user_claim": "preferred_username",
+      "oidc_groups_claim": "groups",
+      "oidc_admin_group": "spr-admins"
+    }
+    
 jobservice:
   resources:
     requests:
