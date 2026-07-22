@@ -5,9 +5,9 @@ metadata:
   namespace: demoapp
 spec:
   secretName: tls-demo-app
-  commonName: demoapp-landingpage.marth52creative.xyz
+  commonName: demoapp.marth52creative.xyz
   dnsNames:
-  - demoapp-landingpage.marth52creative.xyz
+  - demoapp.marth52creative.xyz
   issuerRef:
     name: letsencrypt-prod
     kind: ClusterIssuer
